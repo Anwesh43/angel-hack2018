@@ -26,7 +26,7 @@ export default class ImageBox extends Component{
             styleObj.marginLeft = '10%'
         }
         return <div style={styleObj}>
-            <video ref="v1" autoPlay width="100%" height="80%" src={`http://localhost:9000/common_sent/${this.props.sentence.split(" ")[this.state.index]}.mp4`}>
+            <video ref="v1" autoPlay width="100%" height="80%" src={`http://192.168.15.219:9000/common_sent/${this.props.sentence.split(" ")[this.state.index]}.mp4`}>
             </video>
             <div style={{width:'100%', height:'20%', textAlign:'center', backgroundColor:"#212121", fontSize: window.innerHeight * 0.07, color:'white'}}>
                 {this.props.sentence.split(" ")[this.state.index]}

@@ -21,6 +21,7 @@
     "redis": "^2.8.0",
     "redux": "^4.0.0",
     "request": "^2.87.0",
-    "seq-queue": "^0.0.5"
+    "seq-queue": "^0.0.5",
+    "socket.io": "^2.1.1"
   }
 }

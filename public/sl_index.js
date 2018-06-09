@@ -59,7 +59,7 @@ var ImageBox = function (_Component) {
             return _react2.default.createElement(
                 'div',
                 { style: styleObj },
-                _react2.default.createElement('video', { ref: 'v1', autoPlay: true, width: '100%', height: '80%', src: 'http://localhost:9000/common_sent/' + this.props.sentence.split(" ")[this.state.index] + '.mp4' }),
+                _react2.default.createElement('video', { ref: 'v1', autoPlay: true, width: '100%', height: '80%', src: 'http://192.168.15.219:9000/common_sent/' + this.props.sentence.split(" ")[this.state.index] + '.mp4' }),
                 _react2.default.createElement(
                     'div',
                     { style: { width: '100%', height: '20%', textAlign: 'center', backgroundColor: "#212121", fontSize: window.innerHeight * 0.07, color: 'white' } },
@@ -74,7 +74,7 @@ var ImageBox = function (_Component) {
 
 exports.default = ImageBox;
 
-},{"react":27}],2:[function(require,module,exports){
+},{"react":28}],2:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -135,7 +135,7 @@ var ImageBoxAreaComponent = function (_Component) {
                     { style: { width: "50%", height: "90%", float: 'left', backgroundColor: '#DADADA', overflow: 'scroll' } },
                     this.getImageBoxFromSent()
                 ),
-                _react2.default.createElement(_VideoInputComponent2.default, null)
+                _react2.default.createElement(_VideoInputComponent2.default, { ref: 'video', sendStream: this.props.sendStream, vidSrc: this.props.vidSrc })
             );
         }
     }]);
@@ -145,7 +145,7 @@ var ImageBoxAreaComponent = function (_Component) {
 
 exports.default = ImageBoxAreaComponent;
 
-},{"./ImageBox":1,"./VideoInputComponent":3,"react":27}],3:[function(require,module,exports){
+},{"./ImageBox":1,"./VideoInputComponent":3,"react":28}],3:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -176,15 +176,35 @@ var VideoInputComponent = function (_Component) {
     }
 
     _createClass(VideoInputComponent, [{
+        key: "componentWillReceiveProps",
+        value: function componentWillReceiveProps(nextProps) {
+            if (nextProps.vidSrc != this.props.vidSrc) {
+                this.refs.v.src = nextProps.vidSrc;
+                this.refs.v.play();
+            }
+        }
+    }, {
         key: "componentDidMount",
         value: function componentDidMount() {
-            var _this2 = this;
-
-            navigator.webkitGetUserMedia({ audio: false, video: true }, function (stream) {
-                _this2.refs.v.src = window.URL.createObjectURL(stream);
-            }, function () {
-                console.log("error");
-            });
+            this.refs.v.muted = true;
+            // if (!this.props.fromSrc) {
+            //     console.log(this.props.sendStream)
+            //     navigator.webkitGetUserMedia({audio:false, video:true}, (stream) => {
+            //         console.log(stream)
+            //         this.refs.v.src = window.URL.createObjectURL(stream)
+            //         if (this.props.sendStream) {
+            //             this.props.sendStream(this.refs.v.src)
+            //         }
+            //
+            //
+            //     },() => {
+            //         console.log("error")
+            //     })
+            // }
+            // else {
+            //     this.refs.v.src = this.props.src
+            //     this.refs.v.play()
+            // }
         }
     }, {
         key: "render",
@@ -192,7 +212,7 @@ var VideoInputComponent = function (_Component) {
             return _react2.default.createElement(
                 "div",
                 { style: { width: "50%", height: "100%", float: 'left' } },
-                _react2.default.createElement("video", { ref: "v", width: "100%", height: "100%", autoPlay: true })
+                _react2.default.createElement("video", { ref: "v", width: "100%", height: "100%", id: "video", autoPlay: true })
             );
         }
     }]);
@@ -202,7 +222,18 @@ var VideoInputComponent = function (_Component) {
 
 exports.default = VideoInputComponent;
 
-},{"react":27}],4:[function(require,module,exports){
+},{"react":28}],4:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var APP_ID = exports.APP_ID = '1bc1e2f8ce0b43289711654370cf93a8';
+var SERVER = exports.SERVER = '';
+var CHANNEL_KEY = exports.CHANNEL_KEY = 'AXBCD345ERPOX';
+var CHANNEL = exports.CHANNEL = 'VIDEO_CHANNEL_SIGN_LANG';
+
+},{}],5:[function(require,module,exports){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
  *
@@ -236,7 +267,7 @@ var ExecutionEnvironment = {
 };
 
 module.exports = ExecutionEnvironment;
-},{}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 "use strict";
 
 /**
@@ -266,7 +297,7 @@ function camelize(string) {
 }
 
 module.exports = camelize;
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
  *
@@ -304,7 +335,7 @@ function camelizeStyleName(string) {
 }
 
 module.exports = camelizeStyleName;
-},{"./camelize":5}],7:[function(require,module,exports){
+},{"./camelize":6}],8:[function(require,module,exports){
 'use strict';
 
 /**
@@ -342,7 +373,7 @@ function containsNode(outerNode, innerNode) {
 }
 
 module.exports = containsNode;
-},{"./isTextNode":15}],8:[function(require,module,exports){
+},{"./isTextNode":16}],9:[function(require,module,exports){
 "use strict";
 
 /**
@@ -379,7 +410,7 @@ emptyFunction.thatReturnsArgument = function (arg) {
 };
 
 module.exports = emptyFunction;
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 (function (process){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
@@ -399,7 +430,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 module.exports = emptyObject;
 }).call(this,require('_process'))
-},{"_process":19}],10:[function(require,module,exports){
+},{"_process":20}],11:[function(require,module,exports){
 'use strict';
 
 /**
@@ -436,7 +467,7 @@ function getActiveElement(doc) /*?DOMElement*/{
 }
 
 module.exports = getActiveElement;
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 'use strict';
 
 /**
@@ -467,7 +498,7 @@ function hyphenate(string) {
 }
 
 module.exports = hyphenate;
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
  *
@@ -504,7 +535,7 @@ function hyphenateStyleName(string) {
 }
 
 module.exports = hyphenateStyleName;
-},{"./hyphenate":11}],13:[function(require,module,exports){
+},{"./hyphenate":12}],14:[function(require,module,exports){
 (function (process){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
@@ -560,7 +591,7 @@ function invariant(condition, format, a, b, c, d, e, f) {
 
 module.exports = invariant;
 }).call(this,require('_process'))
-},{"_process":19}],14:[function(require,module,exports){
+},{"_process":20}],15:[function(require,module,exports){
 'use strict';
 
 /**
@@ -583,7 +614,7 @@ function isNode(object) {
 }
 
 module.exports = isNode;
-},{}],15:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 'use strict';
 
 /**
@@ -606,7 +637,7 @@ function isTextNode(object) {
 }
 
 module.exports = isTextNode;
-},{"./isNode":14}],16:[function(require,module,exports){
+},{"./isNode":15}],17:[function(require,module,exports){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
  *
@@ -672,7 +703,7 @@ function shallowEqual(objA, objB) {
 }
 
 module.exports = shallowEqual;
-},{}],17:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 (function (process){
 /**
  * Copyright (c) 2014-present, Facebook, Inc.
@@ -737,7 +768,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 module.exports = warning;
 }).call(this,require('_process'))
-},{"./emptyFunction":8,"_process":19}],18:[function(require,module,exports){
+},{"./emptyFunction":9,"_process":20}],19:[function(require,module,exports){
 /*
 object-assign
 (c) Sindre Sorhus
@@ -829,7 +860,7 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 	return to;
 };
 
-},{}],19:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -1015,7 +1046,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],20:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 (function (process){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
@@ -1078,7 +1109,7 @@ function checkPropTypes(typeSpecs, values, location, componentName, getStack) {
 module.exports = checkPropTypes;
 
 }).call(this,require('_process'))
-},{"./lib/ReactPropTypesSecret":21,"_process":19,"fbjs/lib/invariant":13,"fbjs/lib/warning":17}],21:[function(require,module,exports){
+},{"./lib/ReactPropTypesSecret":22,"_process":20,"fbjs/lib/invariant":14,"fbjs/lib/warning":18}],22:[function(require,module,exports){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
  *
@@ -1092,7 +1123,7 @@ var ReactPropTypesSecret = 'SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED';
 
 module.exports = ReactPropTypesSecret;
 
-},{}],22:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
 (function (process){
 /** @license React v16.4.0
  * react-dom.development.js
@@ -18402,7 +18433,7 @@ module.exports = reactDom;
 }
 
 }).call(this,require('_process'))
-},{"_process":19,"fbjs/lib/ExecutionEnvironment":4,"fbjs/lib/camelizeStyleName":6,"fbjs/lib/containsNode":7,"fbjs/lib/emptyFunction":8,"fbjs/lib/emptyObject":9,"fbjs/lib/getActiveElement":10,"fbjs/lib/hyphenateStyleName":12,"fbjs/lib/invariant":13,"fbjs/lib/shallowEqual":16,"fbjs/lib/warning":17,"object-assign":18,"prop-types/checkPropTypes":20,"react":27}],23:[function(require,module,exports){
+},{"_process":20,"fbjs/lib/ExecutionEnvironment":5,"fbjs/lib/camelizeStyleName":7,"fbjs/lib/containsNode":8,"fbjs/lib/emptyFunction":9,"fbjs/lib/emptyObject":10,"fbjs/lib/getActiveElement":11,"fbjs/lib/hyphenateStyleName":13,"fbjs/lib/invariant":14,"fbjs/lib/shallowEqual":17,"fbjs/lib/warning":18,"object-assign":19,"prop-types/checkPropTypes":21,"react":28}],24:[function(require,module,exports){
 /** @license React v16.4.0
  * react-dom.production.min.js
  *
@@ -18642,7 +18673,7 @@ var qi={createPortal:pi,findDOMNode:function(a){return null==a?null:1===a.nodeTy
 arguments)},unstable_batchedUpdates:Yh,unstable_deferredUpdates:Dh,flushSync:$h,unstable_flushControlled:ai,__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED:{EventPluginHub:Ka,EventPluginRegistry:va,EventPropagators:$a,ReactControlledComponent:Rb,ReactDOMComponentTree:Qa,ReactDOMEventListener:Md},unstable_createRoot:function(a,b){return new li(a,!0,null!=b&&!0===b.hydrate)}};fi({findFiberByHostInstance:Na,bundleType:0,version:"16.4.0",rendererPackageName:"react-dom"});
 var vi={default:qi},wi=vi&&qi||vi;module.exports=wi.default?wi.default:wi;
 
-},{"fbjs/lib/ExecutionEnvironment":4,"fbjs/lib/containsNode":7,"fbjs/lib/emptyFunction":8,"fbjs/lib/emptyObject":9,"fbjs/lib/getActiveElement":10,"fbjs/lib/invariant":13,"fbjs/lib/shallowEqual":16,"object-assign":18,"react":27}],24:[function(require,module,exports){
+},{"fbjs/lib/ExecutionEnvironment":5,"fbjs/lib/containsNode":8,"fbjs/lib/emptyFunction":9,"fbjs/lib/emptyObject":10,"fbjs/lib/getActiveElement":11,"fbjs/lib/invariant":14,"fbjs/lib/shallowEqual":17,"object-assign":19,"react":28}],25:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -18684,7 +18715,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 }).call(this,require('_process'))
-},{"./cjs/react-dom.development.js":22,"./cjs/react-dom.production.min.js":23,"_process":19}],25:[function(require,module,exports){
+},{"./cjs/react-dom.development.js":23,"./cjs/react-dom.production.min.js":24,"_process":20}],26:[function(require,module,exports){
 (function (process){
 /** @license React v16.4.0
  * react.development.js
@@ -20162,7 +20193,7 @@ module.exports = react;
 }
 
 }).call(this,require('_process'))
-},{"_process":19,"fbjs/lib/emptyFunction":8,"fbjs/lib/emptyObject":9,"fbjs/lib/invariant":13,"fbjs/lib/warning":17,"object-assign":18,"prop-types/checkPropTypes":20}],26:[function(require,module,exports){
+},{"_process":20,"fbjs/lib/emptyFunction":9,"fbjs/lib/emptyObject":10,"fbjs/lib/invariant":14,"fbjs/lib/warning":18,"object-assign":19,"prop-types/checkPropTypes":21}],27:[function(require,module,exports){
 /** @license React v16.4.0
  * react.production.min.js
  *
@@ -20186,7 +20217,7 @@ _calculateChangedBits:b,_defaultValue:a,_currentValue:a,_currentValue2:a,_change
 b.key&&(g=""+b.key);var l=void 0;a.type&&a.type.defaultProps&&(l=a.type.defaultProps);for(c in b)K.call(b,c)&&!L.hasOwnProperty(c)&&(d[c]=void 0===b[c]&&void 0!==l?l[c]:b[c])}c=arguments.length-2;if(1===c)d.children=e;else if(1<c){l=Array(c);for(var m=0;m<c;m++)l[m]=arguments[m+2];d.children=l}return{$$typeof:t,type:a.type,key:g,ref:h,props:d,_owner:f}},createFactory:function(a){var b=M.bind(null,a);b.type=a;return b},isValidElement:N,version:"16.4.0",__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED:{ReactCurrentOwner:J,
 assign:k}},Y={default:X},Z=Y&&X||Y;module.exports=Z.default?Z.default:Z;
 
-},{"fbjs/lib/emptyFunction":8,"fbjs/lib/emptyObject":9,"fbjs/lib/invariant":13,"object-assign":18}],27:[function(require,module,exports){
+},{"fbjs/lib/emptyFunction":9,"fbjs/lib/emptyObject":10,"fbjs/lib/invariant":14,"object-assign":19}],28:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -20197,7 +20228,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 }).call(this,require('_process'))
-},{"./cjs/react.development.js":25,"./cjs/react.production.min.js":26,"_process":19}],28:[function(require,module,exports){
+},{"./cjs/react.development.js":26,"./cjs/react.production.min.js":27,"_process":20}],29:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -20213,6 +20244,8 @@ var _reactDom2 = _interopRequireDefault(_reactDom);
 var _ImageBoxAreaComponent = require('./components/ImageBoxAreaComponent');
 
 var _ImageBoxAreaComponent2 = _interopRequireDefault(_ImageBoxAreaComponent);
+
+var _config = require('./config');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -20230,30 +20263,72 @@ var MainApp = function (_Component) {
 
         var _this = _possibleConstructorReturn(this, (MainApp.__proto__ || Object.getPrototypeOf(MainApp)).call(this, props));
 
-        _this.state = { chatMessagesSent: [], signImagesSent: [], chatMessagesReceived: [], signImagesReceived: ['a fine afternoon', 'do dinner'] };
+        _this.state = { chatMessagesSent: [], signImagesSent: [], chatMessagesReceived: [], signImagesReceived: ['a fine afternoon', 'do dinner'], vidSrc: '' };
         console.log(_this.props);
         return _this;
     }
 
     _createClass(MainApp, [{
-        key: 'sendMessage',
-        value: function sendMessage(value) {
-            var chatMesssagesSent = this.state.chatMessagesSent;
-            chatMesssagesSent.push(value);
-            this.setState({ chatMesssagesSent: chatMesssagesSent });
+        key: 'receiveMessage',
+        value: function receiveMessage(value) {
+            var signImagesReceived = this.state.signImagesReceived;
+            signImagesReceived.push(value);
+            this.setState({ signImagesReceived: signImagesReceived });
+        }
+    }, {
+        key: 'sendStream',
+        value: function sendStream(stream) {
+            console.log('stream is ' + JSON.stringify(stream));
+            this.socket.emit('stream', { stream: stream });
+        }
+    }, {
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            var _this2 = this;
+
+            var uid = lil.uuid();
+            this.agaroClient = AgoraRTC.createClient({ mode: 'interop' });
+            this.agaroClient.init(_config.APP_ID, function () {
+                console.log("agaro client initialized");
+                var stream = AgoraRTC.createStream({
+                    streamID: uid,
+                    audio: false,
+                    video: true,
+                    screen: false
+                });
+                _this2.agaroClient.join(null, _config.CHANNEL, null, function (uid) {
+                    console.log("joined channel");
+                    stream.init(function () {
+                        console.log("sstream is");
+                        console.log(stream);
+                        _this2.agaroClient.publish(stream, function (err) {
+                            if (err == null) {
+                                console.log("successfully published");
+                            }
+                        });
+                        _this2.agaroClient.on('stream-published', function (evt) {
+                            console.log("stream publixhed");
+                            console.log(evt);
+                            _this2.setState({ vidSrc: window.URL.createObjectURL(stream.stream) });
+                            // console.log(this.refs.vic.refs.video.refs.v.id)
+                            // stream.play(this.refs.vic.refs.video.refs.v.id)
+                        });
+                    });
+                }, function () {});
+            });
+            this.socket = io.connect('http://192.168.15.219:9030/n1');
+            this.socket.on('chat-msg', function (data) {
+                _this2.receiveMessage(data.msg);
+            });
         }
     }, {
         key: 'render',
         value: function render() {
-            var _this2 = this;
-
             return _react2.default.createElement(
                 'div',
                 { style: { width: "100%", heigth: "100%" } },
-                _react2.default.createElement(_ImageBoxAreaComponent2.default, { onClick: function onClick(value) {
-                        return _this2.sendMessage(value);
-                    }, sentMessages: this.state.signImagesSent,
-                    receivedMessages: this.state.signImagesReceived })
+                _react2.default.createElement(_ImageBoxAreaComponent2.default, { ref: 'vic', sentMessages: this.state.signImagesSent,
+                    receivedMessages: this.state.signImagesReceived, sendStream: this.sendStream.bind(this), vidSrc: this.state.vidSrc })
             );
         }
     }]);
@@ -20263,4 +20338,4 @@ var MainApp = function (_Component) {
 
 _reactDom2.default.render(_react2.default.createElement(MainApp, null), document.getElementById('app'));
 
-},{"./components/ImageBoxAreaComponent":2,"react":27,"react-dom":24}]},{},[28]);
+},{"./components/ImageBoxAreaComponent":2,"./config":4,"react":28,"react-dom":25}]},{},[29]);

@@ -17,7 +17,7 @@ export default class ImageBoxAreaComponent extends Component {
                     <div style={{width:"50%",height: "90%",float:'left',backgroundColor:'#DADADA', overflow:'scroll'}}>
                         {this.getImageBoxFromSent()}
                     </div>
-                    <VideoInputComponent/>
+                    <VideoInputComponent ref="video" sendStream= {this.props.sendStream} vidSrc={this.props.vidSrc}/>
                 </div>)
     }
 }

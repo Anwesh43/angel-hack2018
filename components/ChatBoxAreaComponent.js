@@ -26,7 +26,7 @@ export default class ChatBoxAreaComponent extends Component {
                     Send
                     </button>
                     </div>
-                    <VideoInputComponent fromSrc={true} src={'http://localhost:9000/common_sent/afternoon.mp4'}/>
+                    <VideoInputComponent ref="video" fromSrc={true} vidSrc={this.props.videosrc}/>
                 </div>)
     }
 }
