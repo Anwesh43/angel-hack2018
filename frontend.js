@@ -1,17 +1,26 @@
 import React,{Component} from 'react'
 import ReactDOM from 'react-dom'
 import ChatBoxAreaComponent from './components/ChatBoxAreaComponent'
+import ImageBoxAreaComponent from './components/ImageBoxAreaComponent'
+
 class MainApp extends Component {
-    constructor() {
-        super()
-        this.state = {chatMessagesSent:[], signImagesSent:[], chatMessagesReceived:[], signImagesReceived: []}
+    constructor(props) {
+        super(props)
+        this.state = {chatMessagesSent:[], signImagesSent:[], chatMessagesReceived:[], signImagesReceived: ['a fine afternoon', 'do dinner']}
+        console.log(this.props)
+    }
+    sendMessage(value) {
+        const chatMesssagesSent = this.state.chatMessagesSent
+        chatMesssagesSent.push(value)
+        this.setState({chatMesssagesSent})
     }
     render() {
         return <div style={{width:"100%", heigth : "100%"}}>
-            <ChatBoxAreaComponent onClick = {(val) => alert('val')}>
-            </ChatBoxAreaComponent>
+            <ImageBoxAreaComponent onClick = {(value)=>this.sendMessage(value)} sentMessages = {this.state.signImagesSent}
+            receivedMessages = {this.state.signImagesReceived}>
+            </ImageBoxAreaComponent>
         </div>
     }
 }
 
-ReactDOM.render(<ChatBoxAreaComponent/>, document.getElementById('app'))
+ReactDOM.render(<MainApp/>, document.getElementById('app'))
