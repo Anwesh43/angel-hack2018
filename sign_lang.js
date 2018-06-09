@@ -1,6 +1,6 @@
 import React,{Component} from 'react'
 import ReactDOM from 'react-dom'
-import ChatBoxAreaComponent from './components/ChatBoxAreaComponent'
+import ImageBoxAreaComponent from './components/ImageBoxAreaComponent'
 
 class MainApp extends Component {
     constructor(props) {
@@ -15,9 +15,9 @@ class MainApp extends Component {
     }
     render() {
         return <div style={{width:"100%", heigth : "100%"}}>
-            <ChatBoxAreaComponent onClick = {(value)=>this.sendMessage(value)} sentMessages = {this.state.chatMessagesSent}
-            receivedMessages = {this.state.chatMessagesReceived}>
-            </ChatBoxAreaComponent>
+            <ImageBoxAreaComponent onClick = {(value)=>this.sendMessage(value)} sentMessages = {this.state.signImagesSent}
+            receivedMessages = {this.state.signImagesReceived}>
+            </ImageBoxAreaComponent>
         </div>
     }
 }

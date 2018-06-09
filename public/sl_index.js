@@ -19,45 +19,60 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var ChatBox = function (_Component) {
-    _inherits(ChatBox, _Component);
+var ImageBox = function (_Component) {
+    _inherits(ImageBox, _Component);
 
-    function ChatBox(props) {
-        _classCallCheck(this, ChatBox);
+    function ImageBox(props) {
+        _classCallCheck(this, ImageBox);
 
-        var _this = _possibleConstructorReturn(this, (ChatBox.__proto__ || Object.getPrototypeOf(ChatBox)).call(this, props));
+        var _this = _possibleConstructorReturn(this, (ImageBox.__proto__ || Object.getPrototypeOf(ImageBox)).call(this, props));
 
-        console.log(_this.props);
+        _this.state = { index: 0 };
         return _this;
     }
 
-    _createClass(ChatBox, [{
+    _createClass(ImageBox, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            var _this2 = this;
+
+            this.refs.v1.oncanplay = function () {
+                console.log('loaded');
+                _this2.refs.v1.muted = true;
+                console.log(_this2.refs.v1);
+                _this2.refs.v1.play();
+            };
+            this.refs.v1.onended = function () {
+                if (_this2.state.index < _this2.props.sentence.split(" ").length - 1) {
+                    _this2.setState({ index: _this2.state.index + 1 });
+                    _this2.refs.v1.play();
+                }
+            };
+        }
+    }, {
         key: 'render',
         value: function render() {
-            var styleObj = { display: 'inline-block', padding: "12px", fontSize: window.innerHeight / 30, color: 'white', 'borderRadius': '5px' };
-            if (this.props.messageType == 'mine') {
-                styleObj.backgroundColor = '#94C2ED';
-                styleObj.float = 'right';
-            } else {
-                styleObj.backgroundColor = '#94C2ED';
-                styleObj.float = 'left';
+            var styleObj = { width: "60%", height: "50%", marginRight: '10%', marginBottom: '15%' };
+            if (this.props.messageType == 'received') {
+                styleObj.marginLeft = '10%';
             }
             return _react2.default.createElement(
                 'div',
-                { style: { clear: 'both', marginBottom: "20%" } },
+                { style: styleObj },
+                _react2.default.createElement('video', { ref: 'v1', autoPlay: true, width: '100%', height: '80%', src: 'http://localhost:9000/common_sent/' + this.props.sentence.split(" ")[this.state.index] + '.mp4' }),
                 _react2.default.createElement(
                     'div',
-                    { style: styleObj },
-                    this.props.message
+                    { style: { width: '100%', height: '20%', textAlign: 'center', backgroundColor: "#212121", fontSize: window.innerHeight * 0.07, color: 'white' } },
+                    this.props.sentence.split(" ")[this.state.index]
                 )
             );
         }
     }]);
 
-    return ChatBox;
+    return ImageBox;
 }(_react.Component);
 
-exports.default = ChatBox;
+exports.default = ImageBox;
 
 },{"react":27}],2:[function(require,module,exports){
 'use strict';
@@ -72,9 +87,13 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _ChatBox = require('./ChatBox');
+var _ImageBox = require('./ImageBox');
 
-var _ChatBox2 = _interopRequireDefault(_ChatBox);
+var _ImageBox2 = _interopRequireDefault(_ImageBox);
+
+var _VideoInputComponent = require('./VideoInputComponent');
+
+var _VideoInputComponent2 = _interopRequireDefault(_VideoInputComponent);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -84,74 +103,60 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var ChatBoxAreaComponent = function (_Component) {
-    _inherits(ChatBoxAreaComponent, _Component);
+var ImageBoxAreaComponent = function (_Component) {
+    _inherits(ImageBoxAreaComponent, _Component);
 
-    function ChatBoxAreaComponent(props) {
-        _classCallCheck(this, ChatBoxAreaComponent);
+    function ImageBoxAreaComponent(props) {
+        _classCallCheck(this, ImageBoxAreaComponent);
 
-        var _this = _possibleConstructorReturn(this, (ChatBoxAreaComponent.__proto__ || Object.getPrototypeOf(ChatBoxAreaComponent)).call(this, props));
+        var _this = _possibleConstructorReturn(this, (ImageBoxAreaComponent.__proto__ || Object.getPrototypeOf(ImageBoxAreaComponent)).call(this, props));
 
-        console.log('in cbac');
+        console.log('in ibac');
         console.log(_this.props);
         return _this;
     }
 
-    _createClass(ChatBoxAreaComponent, [{
-        key: 'getChatBoxForMe',
-        value: function getChatBoxForMe() {
-            console.log(this.props.sentMessages);
-            return (this.props.sentMessages || ['hello world', 'nano']).map(function (m, index) {
-                return _react2.default.createElement(_ChatBox2.default, { key: 'key' + index, message: m, messageType: 'mine' });
+    _createClass(ImageBoxAreaComponent, [{
+        key: 'getImageBoxFromSent',
+        value: function getImageBoxFromSent() {
+            console.log(this.props.receivedMessages);
+            return (this.props.receivedMessages || ['a fine afternoon', 'do dinner']).map(function (m, index) {
+                return _react2.default.createElement(_ImageBox2.default, { key: 'key' + index, sentence: m, messageType: 'received' });
             });
         }
     }, {
         key: 'render',
         value: function render() {
-            var _this2 = this;
-
             return _react2.default.createElement(
                 'div',
                 { style: { width: "100%", height: "100%", position: 'absolute' } },
                 _react2.default.createElement(
                     'div',
-                    { style: { width: "100%", height: "90%", float: 'top', backgroundColor: '#DADADA', overflow: 'scroll' } },
-                    this.getChatBoxForMe()
+                    { style: { width: "50%", height: "90%", float: 'left', backgroundColor: '#DADADA', overflow: 'scroll' } },
+                    this.getImageBoxFromSent()
                 ),
-                _react2.default.createElement('input', { type: 'text', style: { width: "70%", height: "10%", float: 'top', fontSize: window.innerHeight / 15 }, ref: 'textBox' }),
-                _react2.default.createElement(
-                    'button',
-                    { style: { width: "30%", height: '10%', fontSize: window.innerHeight / 15, backgroundColor: '#283593', color: 'white' }, ref: 'sendButton', onClick: function onClick() {
-                            _this2.props.onClick(_this2.refs.textBox.value);
-                            _this2.refs.textBox.value = '';
-                        } },
-                    'Send'
-                )
+                _react2.default.createElement(_VideoInputComponent2.default, null)
             );
         }
     }]);
 
-    return ChatBoxAreaComponent;
+    return ImageBoxAreaComponent;
 }(_react.Component);
 
-exports.default = ChatBoxAreaComponent;
+exports.default = ImageBoxAreaComponent;
 
-},{"./ChatBox":1,"react":27}],3:[function(require,module,exports){
-'use strict';
+},{"./ImageBox":1,"./VideoInputComponent":3,"react":27}],3:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = require('react');
+var _react = require("react");
 
 var _react2 = _interopRequireDefault(_react);
-
-var _reactDom = require('react-dom');
-
-var _reactDom2 = _interopRequireDefault(_reactDom);
-
-var _ChatBoxAreaComponent = require('./components/ChatBoxAreaComponent');
-
-var _ChatBoxAreaComponent2 = _interopRequireDefault(_ChatBoxAreaComponent);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -161,48 +166,43 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var MainApp = function (_Component) {
-    _inherits(MainApp, _Component);
+var VideoInputComponent = function (_Component) {
+    _inherits(VideoInputComponent, _Component);
 
-    function MainApp(props) {
-        _classCallCheck(this, MainApp);
+    function VideoInputComponent(props) {
+        _classCallCheck(this, VideoInputComponent);
 
-        var _this = _possibleConstructorReturn(this, (MainApp.__proto__ || Object.getPrototypeOf(MainApp)).call(this, props));
-
-        _this.state = { chatMessagesSent: [], signImagesSent: [], chatMessagesReceived: [], signImagesReceived: ['a fine afternoon', 'do dinner'] };
-        console.log(_this.props);
-        return _this;
+        return _possibleConstructorReturn(this, (VideoInputComponent.__proto__ || Object.getPrototypeOf(VideoInputComponent)).call(this, props));
     }
 
-    _createClass(MainApp, [{
-        key: 'sendMessage',
-        value: function sendMessage(value) {
-            var chatMesssagesSent = this.state.chatMessagesSent;
-            chatMesssagesSent.push(value);
-            this.setState({ chatMesssagesSent: chatMesssagesSent });
-        }
-    }, {
-        key: 'render',
-        value: function render() {
+    _createClass(VideoInputComponent, [{
+        key: "componentDidMount",
+        value: function componentDidMount() {
             var _this2 = this;
 
+            navigator.webkitGetUserMedia({ audio: false, video: true }, function (stream) {
+                _this2.refs.v.src = window.URL.createObjectURL(stream);
+            }, function () {
+                console.log("error");
+            });
+        }
+    }, {
+        key: "render",
+        value: function render() {
             return _react2.default.createElement(
-                'div',
-                { style: { width: "100%", heigth: "100%" } },
-                _react2.default.createElement(_ChatBoxAreaComponent2.default, { onClick: function onClick(value) {
-                        return _this2.sendMessage(value);
-                    }, sentMessages: this.state.chatMessagesSent,
-                    receivedMessages: this.state.chatMessagesReceived })
+                "div",
+                { style: { width: "50%", height: "100%", float: 'left' } },
+                _react2.default.createElement("video", { ref: "v", width: "100%", height: "100%", autoPlay: true })
             );
         }
     }]);
 
-    return MainApp;
+    return VideoInputComponent;
 }(_react.Component);
 
-_reactDom2.default.render(_react2.default.createElement(MainApp, null), document.getElementById('app'));
+exports.default = VideoInputComponent;
 
-},{"./components/ChatBoxAreaComponent":2,"react":27,"react-dom":24}],4:[function(require,module,exports){
+},{"react":27}],4:[function(require,module,exports){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
  *
@@ -20197,4 +20197,70 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 }).call(this,require('_process'))
-},{"./cjs/react.development.js":25,"./cjs/react.production.min.js":26,"_process":19}]},{},[3]);
+},{"./cjs/react.development.js":25,"./cjs/react.production.min.js":26,"_process":19}],28:[function(require,module,exports){
+'use strict';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactDom = require('react-dom');
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
+var _ImageBoxAreaComponent = require('./components/ImageBoxAreaComponent');
+
+var _ImageBoxAreaComponent2 = _interopRequireDefault(_ImageBoxAreaComponent);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var MainApp = function (_Component) {
+    _inherits(MainApp, _Component);
+
+    function MainApp(props) {
+        _classCallCheck(this, MainApp);
+
+        var _this = _possibleConstructorReturn(this, (MainApp.__proto__ || Object.getPrototypeOf(MainApp)).call(this, props));
+
+        _this.state = { chatMessagesSent: [], signImagesSent: [], chatMessagesReceived: [], signImagesReceived: ['a fine afternoon', 'do dinner'] };
+        console.log(_this.props);
+        return _this;
+    }
+
+    _createClass(MainApp, [{
+        key: 'sendMessage',
+        value: function sendMessage(value) {
+            var chatMesssagesSent = this.state.chatMessagesSent;
+            chatMesssagesSent.push(value);
+            this.setState({ chatMesssagesSent: chatMesssagesSent });
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var _this2 = this;
+
+            return _react2.default.createElement(
+                'div',
+                { style: { width: "100%", heigth: "100%" } },
+                _react2.default.createElement(_ImageBoxAreaComponent2.default, { onClick: function onClick(value) {
+                        return _this2.sendMessage(value);
+                    }, sentMessages: this.state.signImagesSent,
+                    receivedMessages: this.state.signImagesReceived })
+            );
+        }
+    }]);
+
+    return MainApp;
+}(_react.Component);
+
+_reactDom2.default.render(_react2.default.createElement(MainApp, null), document.getElementById('app'));
+
+},{"./components/ImageBoxAreaComponent":2,"react":27,"react-dom":24}]},{},[28]);

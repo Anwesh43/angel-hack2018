@@ -6,7 +6,7 @@ export default class ChatBox extends Component {
     }
 
     render() {
-        const styleObj = {display:'inline', padding:"10%", fontSize:window.innerHeight/30, color : 'white', 'borderRadius':'5px'}
+        const styleObj = {display:'inline-block', padding:"12px", fontSize:window.innerHeight/30, color : 'white', 'borderRadius':'5px'}
         if (this.props.messageType == 'mine') {
             styleObj.backgroundColor = '#94C2ED'
             styleObj.float = 'right'
@@ -14,7 +14,7 @@ export default class ChatBox extends Component {
             styleObj.backgroundColor = '#94C2ED'
             styleObj.float = 'left'
         }
-        return (<div style={{float:'top', marginBottom:"10%"}}>
+        return (<div style={{clear:'both', marginBottom:"20%"}}>
             <div style={styleObj}>
                 {this.props.message}
             </div>
