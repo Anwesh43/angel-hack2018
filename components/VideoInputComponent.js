@@ -6,11 +6,19 @@ export default class VideoInputComponent extends Component {
     }
 
     componentDidMount() {
-        navigator.webkitGetUserMedia({audio:false, video:true}, (stream) => {
-            this.refs.v.src = window.URL.createObjectURL(stream)
-        },() => {
-            console.log("error")
-        })
+        this.refs.v.muted = true
+        if (!this.props.fromSrc) {
+            navigator.webkitGetUserMedia({audio:false, video:true}, (stream) => {
+                this.refs.v.src = window.URL.createObjectURL(stream)
+            },() => {
+                console.log("error")
+            })
+        }
+        else {
+            this.refs.v.src = this.props.src
+            this.refs.v.play()
+        }
+
     }
     render() {
         return (<div style={{width:"50%", height:"100%", float:'left'}}>

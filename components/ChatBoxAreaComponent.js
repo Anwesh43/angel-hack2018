@@ -1,5 +1,6 @@
 import React,{Component} from 'react'
 import ChatBox from './ChatBox'
+import VideoInputComponent from './VideoInputComponent'
 export default class ChatBoxAreaComponent extends Component {
     constructor(props) {
         super(props)
@@ -13,6 +14,7 @@ export default class ChatBoxAreaComponent extends Component {
     }
     render() {
         return (<div style={{width:"100%", height:"100%", position:'absolute'}}>
+                    <div style={{width:"50%", height:'100%', float:'left'}}>
                     <div style={{width:"100%",height: "90%",float:'top',backgroundColor:'#DADADA', overflow:'scroll'}}>
                         {this.getChatBoxForMe()}
                     </div>
@@ -23,6 +25,8 @@ export default class ChatBoxAreaComponent extends Component {
                     }}>
                     Send
                     </button>
+                    </div>
+                    <VideoInputComponent fromSrc={true} src={'http://localhost:9000/common_sent/afternoon.mp4'}/>
                 </div>)
     }
 }
