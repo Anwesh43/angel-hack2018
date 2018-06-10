@@ -10,7 +10,12 @@ class MainApp extends Component {
     }
     receiveMessage(value) {
         const signImagesReceived = this.state.signImagesReceived
-        signImagesReceived.push(value)
+        if (signImagesReceived.length == 0) {
+            signImagesReceived.push(value)
+        }
+        else {
+            signImagesReceived[0] = value
+        }
         this.setState({signImagesReceived})
     }
     sendStream(stream) {

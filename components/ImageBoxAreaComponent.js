@@ -22,7 +22,7 @@ export default class ImageBoxAreaComponent extends Component {
 
     getImageBoxFromSent() {
         console.log(this.props.receivedMessages)
-        return (this.props.receivedMessages || ['a fine afternoon', 'do dinner']).map((m, index) => <ImageBox key={`key${index}`} sentence={m} messageType='received'/>)
+        return (this.props.receivedMessages || ['a fine afternoon', 'do dinner']).map((m, index) => <ImageBox key={`key${index}${new Date().getTime()}`} sentence={m} messageType='received'/>)
     }
     render() {
         return (<div style={{width:"100%", height:"100%", position:'absolute'}}>

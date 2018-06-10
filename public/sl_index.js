@@ -134,7 +134,7 @@ var ImageBoxAreaComponent = function (_Component) {
         value: function getImageBoxFromSent() {
             console.log(this.props.receivedMessages);
             return (this.props.receivedMessages || ['a fine afternoon', 'do dinner']).map(function (m, index) {
-                return _react2.default.createElement(_ImageBox2.default, { key: 'key' + index, sentence: m, messageType: 'received' });
+                return _react2.default.createElement(_ImageBox2.default, { key: 'key' + index + new Date().getTime(), sentence: m, messageType: 'received' });
             });
         }
     }, {
@@ -20285,7 +20285,11 @@ var MainApp = function (_Component) {
         key: 'receiveMessage',
         value: function receiveMessage(value) {
             var signImagesReceived = this.state.signImagesReceived;
-            signImagesReceived.push(value);
+            if (signImagesReceived.length == 0) {
+                signImagesReceived.push(value);
+            } else {
+                signImagesReceived[0] = value;
+            }
             this.setState({ signImagesReceived: signImagesReceived });
         }
     }, {
