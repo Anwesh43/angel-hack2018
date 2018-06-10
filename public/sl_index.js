@@ -113,10 +113,23 @@ var ImageBoxAreaComponent = function (_Component) {
 
         console.log('in ibac');
         console.log(_this.props);
+        _this.msgs = Object.assign([], _this.props.receivedMessages);
         return _this;
     }
 
     _createClass(ImageBoxAreaComponent, [{
+        key: 'componentWillReceiveProps',
+        value: function componentWillReceiveProps(nextProps) {
+            console.log("update");
+            if (nextProps.receivedMessages.length != this.msgs.length) {
+                console.log("scrolling down");
+                console.log(this.refs.scrollBar.scrollTop);
+                this.refs.scrollBar.scrollTop += 600;
+                console.log(this.refs.scrollBar.scrollTop);
+                this.msgs = Object.assign([], nextProps.receivedMessages);
+            }
+        }
+    }, {
         key: 'getImageBoxFromSent',
         value: function getImageBoxFromSent() {
             console.log(this.props.receivedMessages);
@@ -132,7 +145,7 @@ var ImageBoxAreaComponent = function (_Component) {
                 { style: { width: "100%", height: "100%", position: 'absolute' } },
                 _react2.default.createElement(
                     'div',
-                    { style: { width: "50%", height: "90%", float: 'left', backgroundColor: '#DADADA', overflow: 'scroll' } },
+                    { style: { width: "50%", height: "90%", float: 'left', backgroundColor: '#DADADA', overflow: 'auto' }, ref: 'scrollBar' },
                     this.getImageBoxFromSent()
                 ),
                 _react2.default.createElement(_VideoInputComponent2.default, { ref: 'video', sendStream: this.props.sendStream, vidSrc: this.props.vidSrc })
@@ -20263,7 +20276,7 @@ var MainApp = function (_Component) {
 
         var _this = _possibleConstructorReturn(this, (MainApp.__proto__ || Object.getPrototypeOf(MainApp)).call(this, props));
 
-        _this.state = { chatMessagesSent: [], signImagesSent: [], chatMessagesReceived: [], signImagesReceived: ['a fine afternoon', 'do dinner'], vidSrc: '' };
+        _this.state = { chatMessagesSent: [], signImagesSent: [], chatMessagesReceived: [], signImagesReceived: [], vidSrc: '' };
         console.log(_this.props);
         return _this;
     }
@@ -20316,9 +20329,13 @@ var MainApp = function (_Component) {
                     });
                 }, function () {});
             });
-            this.socket = io.connect('http://192.168.15.219:9030/n1');
+            this.socket = io.connect('https://cowardly-cheetah-39.localtunnel.me/n1');
             this.socket.on('chat-msg', function (data) {
-                _this2.receiveMessage(data.msg);
+                fetch('https://splendid-sheep-2.localtunnel.me/api/parseSentence/' + data.msg).then(function (res) {
+                    return res.json();
+                }).then(function (resObj) {
+                    _this2.receiveMessage(JSON.parse(resObj).response.trim());
+                });
             });
         }
     }, {

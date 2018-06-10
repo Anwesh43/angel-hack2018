@@ -5,7 +5,7 @@ import {APP_ID, CHANNEL_KEY, CHANNEL} from './config'
 class MainApp extends Component {
     constructor(props) {
         super(props)
-        this.state = {chatMessagesSent:[], signImagesSent:[], chatMessagesReceived:[], signImagesReceived: ['a fine afternoon', 'do dinner'], vidSrc:''}
+        this.state = {chatMessagesSent:[], signImagesSent:[], chatMessagesReceived:[], signImagesReceived: [], vidSrc:''}
         console.log(this.props)
     }
     receiveMessage(value) {
@@ -51,9 +51,11 @@ class MainApp extends Component {
            })
 
         })
-        this.socket = io.connect('http://192.168.15.219:9030/n1')
+        this.socket = io.connect('https://cowardly-cheetah-39.localtunnel.me/n1')
         this.socket.on('chat-msg', (data) => {
-            this.receiveMessage(data.msg)
+            fetch(`https://splendid-sheep-2.localtunnel.me/api/parseSentence/${data.msg}`).then(res=>res.json()).then(resObj=>{
+                this.receiveMessage(JSON.parse(resObj).response.trim())
+            })
         })
 
     }

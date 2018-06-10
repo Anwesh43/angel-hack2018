@@ -37,7 +37,7 @@ class MainApp extends Component {
           })
        })
 
-       this.socket = io.connect('http://192.168.15.219:9030/n1')
+       this.socket = io.connect('https://cowardly-cheetah-39.localtunnel.me/n1')
     }
     render() {
         return <div style={{width:"100%", heigth : "100%"}}>

@@ -6,6 +6,18 @@ export default class ImageBoxAreaComponent extends Component {
         super(props)
         console.log('in ibac')
         console.log(this.props)
+        this.msgs = Object.assign([], this.props.receivedMessages)
+    }
+
+    componentWillReceiveProps(nextProps) {
+        console.log("update")
+        if (nextProps.receivedMessages.length != this.msgs.length) {
+            console.log("scrolling down")
+            console.log(this.refs.scrollBar.scrollTop)
+            this.refs.scrollBar.scrollTop += 600
+            console.log(this.refs.scrollBar.scrollTop)
+            this.msgs = Object.assign([], nextProps.receivedMessages)
+        }
     }
 
     getImageBoxFromSent() {
@@ -14,7 +26,7 @@ export default class ImageBoxAreaComponent extends Component {
     }
     render() {
         return (<div style={{width:"100%", height:"100%", position:'absolute'}}>
-                    <div style={{width:"50%",height: "90%",float:'left',backgroundColor:'#DADADA', overflow:'scroll'}}>
+                    <div style={{width:"50%",height: "90%",float:'left',backgroundColor:'#DADADA', overflow:'auto'}} ref="scrollBar">
                         {this.getImageBoxFromSent()}
                     </div>
                     <VideoInputComponent ref="video" sendStream= {this.props.sendStream} vidSrc={this.props.vidSrc}/>
